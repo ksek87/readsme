@@ -1,0 +1,34 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "readsme"
+version = "0.1.0"
+description = "Generate a visual bookshelf SVG for your GitHub profile README"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.9"
+dependencies = [
+    "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+covers = [
+    "httpx>=0.24",
+]
+dev = [
+    "httpx>=0.24",
+    "pytest>=8.0",
+    "pytest-cov",
+]
+
+[project.scripts]
+readsme = "readsme.cli:main"
+
+[project.urls]
+Repository = "https://github.com/ksek87/readsme"
+Issues    = "https://github.com/ksek87/readsme/issues"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

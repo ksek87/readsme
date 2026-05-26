@@ -1,0 +1,178 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="670" role="img" aria-label="My bookshelf">
+  <defs>
+    <linearGradient id="woodGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#EDD080"/>
+      <stop offset="20%"  stop-color="#C8A050"/>
+      <stop offset="100%" stop-color="#8A6228"/>
+    </linearGradient>
+    <filter id="shelfShadow" x="-2%" y="-10%" width="104%" height="200%">
+      <feDropShadow dx="0" dy="3" stdDeviation="2" flood-color="#3A2000" flood-opacity="0.22"/>
+    </filter>
+    <filter id="spineShadow" x="-10%" y="-2%" width="130%" height="104%">
+      <feDropShadow dx="1" dy="0" stdDeviation="1.5" flood-color="#000000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect width="800" height="670" fill="#F4E8C1" rx="8" ry="8"/>
+  <text x="400.0" y="50.0" text-anchor="middle"
+    font-family="Georgia,'Times New Roman',serif"
+    font-size="13" fill="#5C3D2D" letter-spacing="1.5"
+    font-style="italic"
+  >Currently Reading</text>
+  <line x1="28.0" y1="59.0" x2="328.0" y2="59.0" stroke="#C4A265" stroke-width="0.8" opacity="0.5"/>
+  <line x1="472.0" y1="59.0" x2="772.0" y2="59.0" stroke="#C4A265" stroke-width="0.8" opacity="0.5"/>
+  <g class="book" filter="url(#spineShadow)">
+    <title>The Name of the Wind — Patrick Rothfuss (Fantasy)</title>
+    <rect x="24.0" y="76.0" width="32" height="130" fill="#5C3317" rx="2" ry="2"/>
+    <rect x="24.0" y="76.0" width="32" height="4" fill="#9D8473" rx="2" ry="2" opacity="0.65"/>
+    <rect x="52.0" y="76.0" width="4" height="130" fill="#3E220F" opacity="0.5" rx="0"/>
+    <text
+      transform="rotate(-90,40.0,141.0)"
+      x="40.0" y="141.0"
+      text-anchor="middle" dy="0.35em"
+      font-family="Arial,Helvetica,sans-serif"
+      font-size="10" font-weight="500"
+      fill="white" opacity="0.93"
+      pointer-events="none"
+    >The Name of the Wind</text>
+  </g>
+  <g class="book" filter="url(#spineShadow)">
+    <title>Project Hail Mary — Andy Weir (Science Fiction)</title>
+    <rect x="60.0" y="76.0" width="32" height="130" fill="#1B3A5C" rx="2" ry="2"/>
+    <rect x="60.0" y="76.0" width="32" height="4" fill="#76889D" rx="2" ry="2" opacity="0.65"/>
+    <rect x="88.0" y="76.0" width="4" height="130" fill="#12273E" opacity="0.5" rx="0"/>
+    <text
+      transform="rotate(-90,76.0,141.0)"
+      x="76.0" y="141.0"
+      text-anchor="middle" dy="0.35em"
+      font-family="Arial,Helvetica,sans-serif"
+      font-size="10" font-weight="500"
+      fill="white" opacity="0.93"
+      pointer-events="none"
+    >Project Hail Mary</text>
+  </g>
+  <rect x="10.0" y="206.0" width="96.0" height="16" fill="url(#woodGrad)" rx="1" filter="url(#shelfShadow)"/>
+  <rect x="10.0" y="206.0" width="96.0" height="2" fill="#F5E090" rx="1" opacity="0.45"/>
+  <text x="400.0" y="260.0" text-anchor="middle"
+    font-family="Georgia,'Times New Roman',serif"
+    font-size="13" fill="#5C3D2D" letter-spacing="1.5"
+    font-style="italic"
+  >Read</text>
+  <line x1="28.0" y1="269.0" x2="328.0" y2="269.0" stroke="#C4A265" stroke-width="0.8" opacity="0.5"/>
+  <line x1="472.0" y1="269.0" x2="772.0" y2="269.0" stroke="#C4A265" stroke-width="0.8" opacity="0.5"/>
+  <g class="book" filter="url(#spineShadow)">
+    <title>Thinking, Fast and Slow — Daniel Kahneman (Non-fiction)</title>
+    <rect x="24.0" y="286.0" width="32" height="130" fill="#2C4A1E" rx="2" ry="2"/>
+    <rect x="24.0" y="286.0" width="32" height="4" fill="#809278" rx="2" ry="2" opacity="0.65"/>
+    <rect x="52.0" y="286.0" width="4" height="130" fill="#1D3214" opacity="0.5" rx="0"/>
+    <text
+      transform="rotate(-90,40.0,351.0)"
+      x="40.0" y="351.0"
+      text-anchor="middle" dy="0.35em"
+      font-family="Arial,Helvetica,sans-serif"
+      font-size="10" font-weight="500"
+      fill="white" opacity="0.93"
+      pointer-events="none"
+    >Thinking, Fast and …</text>
+  </g>
+  <g class="book" filter="url(#spineShadow)">
+    <title>The Master and Margarita — Mikhail Bulgakov (Fiction)</title>
+    <rect x="60.0" y="286.0" width="32" height="130" fill="#7B2D2D" rx="2" ry="2"/>
+    <rect x="60.0" y="286.0" width="32" height="4" fill="#AF8181" rx="2" ry="2" opacity="0.65"/>
+    <rect x="88.0" y="286.0" width="4" height="130" fill="#531E1E" opacity="0.5" rx="0"/>
+    <text
+      transform="rotate(-90,76.0,351.0)"
+      x="76.0" y="351.0"
+      text-anchor="middle" dy="0.35em"
+      font-family="Arial,Helvetica,sans-serif"
+      font-size="10" font-weight="500"
+      fill="white" opacity="0.93"
+      pointer-events="none"
+    >The Master and Marg…</text>
+  </g>
+  <g class="book" filter="url(#spineShadow)">
+    <title>Sapiens — Yuval Noah Harari (History)</title>
+    <rect x="96.0" y="286.0" width="32" height="130" fill="#6B4226" rx="2" ry="2"/>
+    <rect x="96.0" y="286.0" width="32" height="4" fill="#A68D7C" rx="2" ry="2" opacity="0.65"/>
+    <rect x="124.0" y="286.0" width="4" height="130" fill="#482C19" opacity="0.5" rx="0"/>
+    <text
+      transform="rotate(-90,112.0,351.0)"
+      x="112.0" y="351.0"
+      text-anchor="middle" dy="0.35em"
+      font-family="Arial,Helvetica,sans-serif"
+      font-size="10" font-weight="500"
+      fill="white" opacity="0.93"
+      pointer-events="none"
+    >Sapiens</text>
+  </g>
+  <g class="book" filter="url(#spineShadow)">
+    <title>The Pragmatic Programmer — Hunt &amp; Thomas (Programming)</title>
+    <rect x="132.0" y="286.0" width="32" height="130" fill="#1A3A5C" rx="2" ry="2"/>
+    <rect x="132.0" y="286.0" width="32" height="4" fill="#75889D" rx="2" ry="2" opacity="0.65"/>
+    <rect x="160.0" y="286.0" width="4" height="130" fill="#11273E" opacity="0.5" rx="0"/>
+    <text
+      transform="rotate(-90,148.0,351.0)"
+      x="148.0" y="351.0"
+      text-anchor="middle" dy="0.35em"
+      font-family="Arial,Helvetica,sans-serif"
+      font-size="10" font-weight="500"
+      fill="white" opacity="0.93"
+      pointer-events="none"
+    >The Pragmatic Progr…</text>
+  </g>
+  <rect x="10.0" y="416.0" width="168.0" height="16" fill="url(#woodGrad)" rx="1" filter="url(#shelfShadow)"/>
+  <rect x="10.0" y="416.0" width="168.0" height="2" fill="#F5E090" rx="1" opacity="0.45"/>
+  <text x="400.0" y="470.0" text-anchor="middle"
+    font-family="Georgia,'Times New Roman',serif"
+    font-size="13" fill="#5C3D2D" letter-spacing="1.5"
+    font-style="italic"
+  >Want to Read</text>
+  <line x1="28.0" y1="479.0" x2="328.0" y2="479.0" stroke="#C4A265" stroke-width="0.8" opacity="0.5"/>
+  <line x1="472.0" y1="479.0" x2="772.0" y2="479.0" stroke="#C4A265" stroke-width="0.8" opacity="0.5"/>
+  <g class="book" filter="url(#spineShadow)">
+    <title>Dune — Frank Herbert (Science Fiction)</title>
+    <rect x="24.0" y="496.0" width="32" height="130" fill="#1B3A5C" rx="2" ry="2"/>
+    <rect x="24.0" y="496.0" width="32" height="4" fill="#76889D" rx="2" ry="2" opacity="0.65"/>
+    <rect x="52.0" y="496.0" width="4" height="130" fill="#12273E" opacity="0.5" rx="0"/>
+    <text
+      transform="rotate(-90,40.0,561.0)"
+      x="40.0" y="561.0"
+      text-anchor="middle" dy="0.35em"
+      font-family="Arial,Helvetica,sans-serif"
+      font-size="10" font-weight="500"
+      fill="white" opacity="0.93"
+      pointer-events="none"
+    >Dune</text>
+  </g>
+  <g class="book" filter="url(#spineShadow)">
+    <title>Crime and Punishment — Fyodor Dostoevsky (Classics)</title>
+    <rect x="60.0" y="496.0" width="32" height="130" fill="#5C4A3D" rx="2" ry="2"/>
+    <rect x="60.0" y="496.0" width="32" height="4" fill="#9D928A" rx="2" ry="2" opacity="0.65"/>
+    <rect x="88.0" y="496.0" width="4" height="130" fill="#3E3229" opacity="0.5" rx="0"/>
+    <text
+      transform="rotate(-90,76.0,561.0)"
+      x="76.0" y="561.0"
+      text-anchor="middle" dy="0.35em"
+      font-family="Arial,Helvetica,sans-serif"
+      font-size="10" font-weight="500"
+      fill="white" opacity="0.93"
+      pointer-events="none"
+    >Crime and Punishment</text>
+  </g>
+  <g class="book" filter="url(#spineShadow)">
+    <title>The Dispossessed — Ursula K. Le Guin (Science Fiction)</title>
+    <rect x="96.0" y="496.0" width="32" height="130" fill="#1B3A5C" rx="2" ry="2"/>
+    <rect x="96.0" y="496.0" width="32" height="4" fill="#76889D" rx="2" ry="2" opacity="0.65"/>
+    <rect x="124.0" y="496.0" width="4" height="130" fill="#12273E" opacity="0.5" rx="0"/>
+    <text
+      transform="rotate(-90,112.0,561.0)"
+      x="112.0" y="561.0"
+      text-anchor="middle" dy="0.35em"
+      font-family="Arial,Helvetica,sans-serif"
+      font-size="10" font-weight="500"
+      fill="white" opacity="0.93"
+      pointer-events="none"
+    >The Dispossessed</text>
+  </g>
+  <rect x="10.0" y="626.0" width="132.0" height="16" fill="url(#woodGrad)" rx="1" filter="url(#shelfShadow)"/>
+  <rect x="10.0" y="626.0" width="132.0" height="2" fill="#F5E090" rx="1" opacity="0.45"/>
+</svg>
