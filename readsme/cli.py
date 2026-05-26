@@ -7,7 +7,7 @@ from pathlib import Path
 from . import __version__
 from .config import load_config
 from .renderer import render
-from .readme import update_readme
+from .readme import START, update_readme
 
 
 def _cmd_generate(args: argparse.Namespace) -> int:
@@ -44,7 +44,6 @@ def _cmd_generate(args: argparse.Namespace) -> int:
         if update_readme(readme, output.name):
             print(f"✓ Updated {readme}")
         elif readme.exists():
-            from .readme import START
             has_markers = START in readme.read_text(encoding="utf-8")
             if has_markers:
                 print(f"  {readme}: already up to date")
@@ -58,11 +57,8 @@ def _cmd_generate(args: argparse.Namespace) -> int:
 
 
 def _generate_covers(config, args: argparse.Namespace):
-    try:
-        from .covers import get_cover_data_uri, DEFAULT_CACHE_DIR
-        from .cover_renderer import render_covers
-    except ImportError:
-        pass  # covers.py always importable; httpx checked inside
+    from .covers import DEFAULT_CACHE_DIR, get_cover_data_uri
+    from .cover_renderer import render_covers
 
     cache_dir = None if args.no_cache else DEFAULT_CACHE_DIR
     force = args.no_cache
@@ -83,7 +79,6 @@ def _generate_covers(config, args: argparse.Namespace):
     if no_isbn:
         print(f"  {no_isbn} book{'s' if no_isbn != 1 else ''} without ISBN → spine fallback")
 
-    from .cover_renderer import render_covers
     return render_covers(config, cover_data)
 
 
@@ -123,7 +118,7 @@ def main() -> None:
         "--mode",
         choices=["spines", "covers"],
         default="spines",
-        help="Render mode: spines (Phase 1, default) or covers (Phase 2, fetches cover art)",
+        help="Render mode: spines (default) or covers (fetches cover art from Open Library)",
     )
     gen.add_argument(
         "--no-cache",

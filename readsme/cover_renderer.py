@@ -12,7 +12,6 @@ from xml.sax.saxutils import escape
 
 from .config import Book, Config
 from .renderer import (
-    BG_COLOR,
     OUTER_PAD_BOT,
     OUTER_PAD_TOP,
     OUTER_PAD_X,
@@ -187,8 +186,7 @@ def render_covers(config: Config, cover_data: dict[str, str | None]) -> str:
         f' role="img" aria-label="My bookshelf">',
         _svg_defs(),
         clip_block,
-        f'  <rect width="{svg_w}" height="{total_h}"'
-        f' fill="{BG_COLOR}" rx="8" ry="8"/>',
+        f'  <rect class="bg" width="{svg_w}" height="{total_h}" rx="8" ry="8"/>',
         *body_parts,
         "</svg>",
     ])
