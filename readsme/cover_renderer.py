@@ -25,6 +25,7 @@ from .renderer import (
     STATUS_ORDER,
     _darken,
     _lighten,
+    _row_svg_width,
     _svg_defs,
     _svg_section_label,
     _svg_shelf,
@@ -32,7 +33,7 @@ from .renderer import (
 )
 
 COVER_W = 90
-COVER_H = 130
+COVER_H = 160   # matches updated SPINE_H
 COVER_GAP = 8
 COVER_RADIUS = 3
 
@@ -40,6 +41,11 @@ COVER_RADIUS = 3
 def _books_per_row_covers(width: int) -> int:
     avail = width - 2 * OUTER_PAD_X
     return max(1, (avail + COVER_GAP) // (COVER_W + COVER_GAP))
+
+
+def _svg_width_covers(sections: dict, bpr: int) -> int:
+    max_row = max(min(len(b), bpr) for b in sections.values() if b)
+    return _row_svg_width(max_row, COVER_W, COVER_GAP)
 
 
 def _total_height_covers(sections: dict[str, list], bpr: int) -> int:
@@ -133,6 +139,7 @@ def render_covers(config: Config, cover_data: dict[str, str | None]) -> str:
         sections[book.status].append(book)
 
     bpr = _books_per_row_covers(config.width)
+    svg_w = _svg_width_covers(sections, bpr)
     total_h = _total_height_covers(sections, bpr)
     non_empty = [s for s in STATUS_ORDER if sections[s]]
 
@@ -143,7 +150,7 @@ def render_covers(config: Config, cover_data: dict[str, str | None]) -> str:
     y = float(OUTER_PAD_TOP)
     for sec_idx, status in enumerate(non_empty):
         books = sections[status]
-        body_parts.append(_svg_section_label(status, y, config.width))
+        body_parts.append(_svg_section_label(status, y, svg_w))
         y += SECTION_LABEL_H
 
         rows = [books[i : i + bpr] for i in range(0, len(books), bpr)]
@@ -176,11 +183,11 @@ def render_covers(config: Config, cover_data: dict[str, str | None]) -> str:
 
     return "\n".join([
         f'<svg xmlns="http://www.w3.org/2000/svg"'
-        f' width="{config.width}" height="{total_h}"'
+        f' width="{svg_w}" height="{total_h}"'
         f' role="img" aria-label="My bookshelf">',
         _svg_defs(),
         clip_block,
-        f'  <rect width="{config.width}" height="{total_h}"'
+        f'  <rect width="{svg_w}" height="{total_h}"'
         f' fill="{BG_COLOR}" rx="8" ry="8"/>',
         *body_parts,
         "</svg>",
