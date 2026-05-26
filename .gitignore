@@ -10,3 +10,4 @@ venv/
 .coverage
 htmlcov/
 books.yaml
+.readsme-cache/
