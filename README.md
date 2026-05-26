@@ -1,12 +1,8 @@
 # readsme
 
-> *A bookshelf for your GitHub profile.*
+> *Show what you read, not just what you build.*
 
-Most GitHub profiles show what you've built. This shows what you've read.
-
-`readsme` turns a plain YAML file into a warm, shelf-style SVG — books spine-out, coloured by category, grouped into *Currently Reading*, *Read*, and *Want to Read*. It embeds directly in your `README.md` and updates automatically when you push.
-
-Here's the shelf for this repo:
+A visual bookshelf for your GitHub profile README — books spine-out, coloured by category, grouped into *Currently Reading*, *Read*, and *Want to Read*. Embed it with one line of Markdown. No server setup needed.
 
 <!-- readsme-start -->
 ![My bookshelf](shelf.svg)
@@ -14,74 +10,88 @@ Here's the shelf for this repo:
 
 ---
 
-## Setup
+## Hosted service (no install)
 
-### 1. Install
+Add one line to your GitHub profile README:
 
-```bash
-pip install readsme
+```markdown
+![My bookshelf](https://readsme.vercel.app/shelf/YOUR_USERNAME)
 ```
 
-### 2. Create your `books.yaml`
+That's it. The shelf renders live from a `books.yaml` file in your profile repository (`username/username`). Every push refreshes it automatically — no CI, no tokens, no workflow needed.
+
+---
+
+## books.yaml
+
+Create `books.yaml` in your profile repo (`username/username/books.yaml`):
 
 ```yaml
-width: 800
+width: 800   # optional, controls max shelf width
 
 books:
   - title: "Meditations"
     author: "Marcus Aurelius"
     category: Philosophy
     status: read
-    isbn: "9780140441406"
-
-  - title: "The Lean Startup"
-    author: "Eric Ries"
-    category: Business
-    status: read
-    isbn: "9780307887894"
+    isbn: "9780140441406"   # optional — used for cover art mode
 
   - title: "Designing Your Life"
     author: "Bill Burnett & Dave Evans"
     category: Self-help
     status: reading
-    isbn: "9781784701178"
+
+  - title: "The Lean Startup"
+    author: "Eric Ries"
+    category: Business
+    status: want-to-read
+
+# Optional: override a category's spine colour
+categories:
+  Philosophy:
+    color: "#3A1060"
 ```
 
-### 3. Add markers to your `README.md`
+| Status | Section |
+|---|---|
+| `reading` | Currently Reading — shown first, with a gold pulsing border |
+| `read` | Read |
+| `want-to-read` | Want to Read |
+
+Sections with no books are hidden automatically.
+
+---
+
+## Self-hosted / CLI
+
+If you'd rather commit the SVG to your repo and not depend on the hosted service:
+
+```bash
+pip install readsme
+readsme generate --config books.yaml --output shelf.svg --readme README.md
+```
+
+Then add markers to your `README.md`:
 
 ```markdown
 <!-- readsme-start -->
 <!-- readsme-end -->
 ```
 
-### 4. Generate
+`readsme generate` fills in the block. Commit `shelf.svg` and `README.md`.
+
+### Auto-update with GitHub Actions
+
+Copy `.github/workflows/readsme.yml` from this repo into your profile repository. It regenerates `shelf.svg` and commits it whenever you push a change to `books.yaml`:
 
 ```bash
-readsme generate
-```
-
-This writes `shelf.svg` and fills the markers in `README.md`. Commit both files and you're done.
-
----
-
-## Auto-update with GitHub Actions
-
-Copy `.github/workflows/readsme.yml` from this repo into your profile repository. It re-generates `shelf.svg` and commits it automatically whenever you push a change to `books.yaml`.
-
-After that, adding a book is just:
-
-```bash
-# edit books.yaml, add a new entry
 git add books.yaml && git commit -m "read: Meditations" && git push
+# shelf updates itself
 ```
 
-The shelf updates itself.
+### Cover art mode
 
----
-
-## Cover art mode
-
-Pass `--mode covers` to fetch real cover thumbnails from Open Library (falling back to Google Books). Covers are embedded as base64 so they render correctly on GitHub. Books without an ISBN fall back to the spine style — the shelf never has gaps.
+Fetch real cover thumbnails from Open Library (with Google Books fallback). Covers are embedded as base64 so they render correctly through GitHub's image proxy. Books without an ISBN fall back to the spine style — no gaps.
 
 ```bash
 pip install "readsme[covers]"
@@ -92,45 +102,15 @@ Covers are cached in `.readsme-cache/` after the first fetch. Use `--no-cache` t
 
 ---
 
-## `books.yaml` reference
-
-```yaml
-width: 800   # SVG width in pixels
-
-# Optional: override colours per category
-categories:
-  Technology:
-    color: "#1A2E4A"
-  Philosophy:
-    color: "#3D2A4A"
-
-books:
-  - title: "..."
-    author: "..."
-    category: "..."    # any string — unmapped categories auto-assign from the warm palette
-    status: reading    # reading | read | want-to-read
-    isbn: "..."        # optional — enables cover art with --mode covers
-```
-
-| Status | Shelf section |
-|---|---|
-| `reading` | Currently Reading |
-| `read` | Read |
-| `want-to-read` | Want to Read |
-
-Sections with no books are hidden.
-
----
-
 ## Colour palette
 
-The default palette is warm and library-like: burgundy, forest green, navy, dark brown. Genres like Fiction, Fantasy, Science Fiction, Non-fiction, History, Philosophy, Technology, Programming, and [many more](readsme/colors.py) have named defaults. Anything else cycles through the palette automatically.
+The default palette is warm and library-like: burgundy, forest green, navy, dark brown. Common genres (Fiction, Fantasy, Science Fiction, History, Philosophy, Technology, and [many more](readsme/colors.py)) have named defaults. Anything else cycles through the palette automatically.
 
 Override any category colour in `books.yaml` under `categories:`.
 
 ---
 
-## CLI
+## CLI reference
 
 ```
 readsme generate [OPTIONS]
@@ -147,10 +127,8 @@ readsme generate [OPTIONS]
 
 ## Why a shelf?
 
-Stats cards tell you *how much* someone reads. A shelf tells you *what* they read — which is the part that's actually interesting. There's no rating, no progress bar, no chart. Just the books, the way they look on a shelf.
+Stats cards tell you *how much* someone reads. A shelf tells you *what* they read — which is the interesting part. No ratings, no progress bars, no charts. Just the books, the way they look on a shelf.
 
 ---
 
-## License
-
-MIT · contributions welcome via [GitHub](https://github.com/ksek87/readsme)
+MIT · [github.com/ksek87/readsme](https://github.com/ksek87/readsme)
