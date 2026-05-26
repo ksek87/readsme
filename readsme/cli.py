@@ -19,7 +19,7 @@ def _cmd_generate(args: argparse.Namespace) -> int:
 
     try:
         config = load_config(config_path)
-    except (ValueError, KeyError, Exception) as exc:
+    except Exception as exc:
         print(f"Error reading config: {exc}", file=sys.stderr)
         return 1
 
@@ -27,7 +27,13 @@ def _cmd_generate(args: argparse.Namespace) -> int:
         print("No books in config. Add some entries to books.yaml.", file=sys.stderr)
         return 1
 
-    svg = render(config)
+    if args.mode == "covers":
+        svg = _generate_covers(config, args)
+    else:
+        svg = render(config)
+
+    if svg is None:
+        return 1
 
     output = Path(args.output)
     output.write_text(svg, encoding="utf-8")
@@ -37,14 +43,52 @@ def _cmd_generate(args: argparse.Namespace) -> int:
         readme = Path(args.readme)
         if update_readme(readme, output.name):
             print(f"✓ Updated {readme}")
-        else:
-            if readme.exists():
+        elif readme.exists():
+            from .readme import START
+            has_markers = START in readme.read_text(encoding="utf-8")
+            if has_markers:
+                print(f"  {readme}: already up to date")
+            else:
                 print(
-                    f"  {readme}: add <!-- readsme-start --> and <!-- readsme-end --> markers "
+                    f"  {readme}: add <!-- readsme-start --> / <!-- readsme-end --> markers "
                     "to auto-embed the shelf."
                 )
 
     return 0
+
+
+def _generate_covers(config, args: argparse.Namespace):
+    try:
+        from .covers import get_cover_data_uri, DEFAULT_CACHE_DIR
+        from .cover_renderer import render_covers
+    except ImportError:
+        pass  # covers.py always importable; httpx checked inside
+
+    cache_dir = None if args.no_cache else DEFAULT_CACHE_DIR
+    force = args.no_cache
+
+    books_with_isbn = [(b, b.isbn) for b in config.books if b.isbn]
+    total = len(books_with_isbn)
+    print(f"Fetching covers for {total} book{'s' if total != 1 else ''} with ISBNs...")
+
+    cover_data: dict[str, str | None] = {}
+    for idx, (book, isbn) in enumerate(books_with_isbn, 1):
+        label = _truncate_label(book.title, 35)
+        print(f"  [{idx}/{total}] {label} ({isbn})", end=" ... ", flush=True)
+        uri = get_cover_data_uri(isbn, cache_dir=cache_dir, force=force)
+        cover_data[isbn] = uri
+        print("ok" if uri else "no cover, using spine")
+
+    no_isbn = sum(1 for b in config.books if not b.isbn)
+    if no_isbn:
+        print(f"  {no_isbn} book{'s' if no_isbn != 1 else ''} without ISBN → spine fallback")
+
+    from .cover_renderer import render_covers
+    return render_covers(config, cover_data)
+
+
+def _truncate_label(text: str, n: int) -> str:
+    return text if len(text) <= n else text[: n - 1] + "…"
 
 
 def main() -> None:
@@ -74,6 +118,18 @@ def main() -> None:
         default="README.md",
         metavar="PATH",
         help="README.md to update (default: README.md; pass '' to skip)",
+    )
+    gen.add_argument(
+        "--mode",
+        choices=["spines", "covers"],
+        default="spines",
+        help="Render mode: spines (Phase 1, default) or covers (Phase 2, fetches cover art)",
+    )
+    gen.add_argument(
+        "--no-cache",
+        action="store_true",
+        default=False,
+        help="Skip the local cover cache and re-fetch all images",
     )
 
     args = parser.parse_args()

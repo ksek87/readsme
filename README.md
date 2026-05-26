@@ -1,6 +1,10 @@
 # readsme
 
-Generate a visual bookshelf SVG for your GitHub profile README. Books are defined in a YAML file; the shelf renders as SVG book spines coloured by category, grouped into *Currently Reading*, *Read*, and *Want to Read* sections.
+**Your GitHub profile deserves a bookshelf.**
+
+Not a reading stats card. Not a data table with star ratings and progress bars. A shelf — the kind that actually says something about who you are.
+
+`readsme` reads a plain YAML file of your books and renders a warm, shelf-style SVG that lives directly in your `README.md`. Books are grouped into *Currently Reading*, *Read*, and *Want to Read* sections. They're coloured by category — dark red for fiction, forest green for non-fiction, navy for sci-fi — using a warm library palette that feels like it belongs on a real shelf, not a dashboard.
 
 <!-- readsme-start -->
 ![My bookshelf](shelf.svg)
@@ -8,55 +12,129 @@ Generate a visual bookshelf SVG for your GitHub profile README. Books are define
 
 ---
 
-## Quick start
+## Install
 
 ```bash
 pip install readsme
-cp books.example.yaml books.yaml
-# edit books.yaml with your books
-readsme generate
 ```
-
-This writes `shelf.svg` and updates the `<!-- readsme-start/end -->` block in `README.md`.
 
 ---
 
-## books.yaml
+## Get started in three steps
+
+**1. Describe your books** — copy the example and fill it in:
+
+```bash
+cp books.example.yaml books.yaml
+```
 
 ```yaml
-width: 800   # SVG width in pixels
-
-# Optional: override the default warm-palette colour for any category
-# categories:
-#   Fantasy:
-#     color: "#4A2040"
+# books.yaml
+width: 800
 
 books:
   - title: "The Name of the Wind"
     author: "Patrick Rothfuss"
     category: Fantasy
-    status: reading          # reading | read | want-to-read
-    isbn: "9780756404079"    # optional — used for cover art in Phase 2
+    status: reading
+    isbn: "9780756404079"
+
+  - title: "Sapiens"
+    author: "Yuval Noah Harari"
+    category: History
+    status: read
+
+  - title: "Dune"
+    author: "Frank Herbert"
+    category: Science Fiction
+    status: want-to-read
+    isbn: "9780441013593"
 ```
 
----
-
-## GitHub Action
-
-Push a `books.yaml` to your repository; the Action will regenerate `shelf.svg` and commit it automatically.
-
-```yaml
-# .github/workflows/readsme.yml  — see the file already included in this repo
-```
-
-Add the markers to your profile `README.md`:
+**2. Add the embed markers** to your `README.md`:
 
 ```markdown
 <!-- readsme-start -->
 <!-- readsme-end -->
 ```
 
-The Action will fill in the `![My bookshelf](shelf.svg)` reference on every push that changes `books.yaml`.
+**3. Generate:**
+
+```bash
+readsme generate
+```
+
+That's it. `shelf.svg` is written and the markers in `README.md` are filled in. Commit both and your profile has a bookshelf.
+
+---
+
+## Keep it up to date automatically
+
+Drop the included GitHub Action into your profile repository. It re-generates `shelf.svg` and commits it whenever you push a change to `books.yaml` — so adding a new book is just editing a YAML file.
+
+```bash
+# from this repo, copy to yours:
+cp .github/workflows/readsme.yml /path/to/your-profile-repo/.github/workflows/
+```
+
+Or add it manually — the full file is `.github/workflows/readsme.yml` in this repository.
+
+---
+
+## books.yaml reference
+
+```yaml
+width: 800          # SVG width in pixels (default: 800)
+
+# Override the default colour for any category (optional)
+categories:
+  Mystery:
+    color: "#1A1A2E"
+  Poetry:
+    color: "#5C4A6E"
+
+books:
+  - title: "..."
+    author: "..."
+    category: "..."       # any string — unknown categories get a palette colour automatically
+    status: reading        # reading | read | want-to-read
+    isbn: "..."            # optional 13-digit ISBN — used for cover art in --mode covers
+```
+
+### Status values
+
+| Value | Section on shelf |
+|---|---|
+| `reading` | Currently Reading |
+| `read` | Read |
+| `want-to-read` | Want to Read |
+
+Sections with no books are hidden automatically.
+
+---
+
+## Colour palette
+
+readsme ships with a warm library palette — deep red, forest green, navy, dark brown — mapped to common genres. Any category not in the defaults cycles through the same palette automatically, so you never need to pick colours unless you want to.
+
+Built-in mappings include: Fiction, Fantasy, Science Fiction, Non-fiction, Biography, History, Mystery, Thriller, Romance, Technology, Programming, Philosophy, Poetry, Classics, Horror, Memoir, Psychology, and more.
+
+---
+
+## Phase 2: real cover art
+
+Pass `--mode covers` to fetch cover thumbnails from Open Library (falling back to Google Books) and render a visual shelf with actual book cover images. Covers are cached in `.readsme-cache/` so subsequent runs are fast. Books without an ISBN, or where no cover is found, fall back to the spine tile automatically — the shelf never has gaps.
+
+```bash
+pip install readsme[covers]   # adds httpx
+readsme generate --mode covers
+```
+
+Force a cache refresh:
+
+```bash
+readsme generate --mode covers --no-cache
+```
 
 ---
 
@@ -65,33 +143,27 @@ The Action will fill in the `![My bookshelf](shelf.svg)` reference on every push
 ```
 readsme generate [OPTIONS]
 
-Options:
-  -c, --config PATH   books.yaml path       (default: books.yaml)
-  -o, --output PATH   output SVG path       (default: shelf.svg)
-  -r, --readme PATH   README.md to update   (default: README.md)
+  -c, --config PATH    books.yaml path         (default: books.yaml)
+  -o, --output PATH    output SVG path          (default: shelf.svg)
+  -r, --readme PATH    README.md to update      (default: README.md)
+      --mode MODE      spines | covers           (default: spines)
+      --no-cache       bypass local cover cache
       --version
 ```
 
 ---
 
-## Category colours
+## Why not a stats card?
 
-Built-in defaults cover most common genres (Fiction, Fantasy, Science Fiction, Non-fiction, History, Mystery, Programming, …). Override any of them in `books.yaml`:
+Stats cards show aggregate data — "reads 40 books a year", "4.1 average rating". A shelf shows *taste*. It's the difference between a résumé line item and a conversation starter. No one ever asked a stranger about their Goodreads wrapped. People do ask "oh, you're reading Bulgakov?"
 
-```yaml
-categories:
-  Mystery:
-    color: "#1A1A2E"
-```
-
-Unknown categories are assigned colours from the warm library palette automatically.
+readsme is deliberately minimal: no ratings, no progress bars, no charts. Just books, the way they look on a shelf — because that's the part that's actually interesting.
 
 ---
 
-## Roadmap
+## Contributing
 
-- **Phase 1** ✅ — SVG spine view (colour-coded by category, grouped by status)
-- **Phase 2** — Cover-art view: fetches JPEG covers from Open Library (fallback: Google Books), embeds as base64 in a self-contained SVG
+Open an issue or PR on [GitHub](https://github.com/ksek87/readsme). The project is small by design — keep it that way.
 
 ---
 
