@@ -27,11 +27,8 @@ class Config:
     category_colors: dict[str, str]
 
 
-def load_config(path: str | Path) -> Config:
-    with open(path, encoding="utf-8") as f:
-        data = yaml.safe_load(f) or {}
-
-    width = int(data.get("width", 800))
+def _parse_config(data: dict, width_override: Optional[int] = None) -> Config:
+    width = width_override if width_override is not None else int(data.get("width", 800))
 
     category_overrides: dict[str, str] = {}
     for cat, attrs in (data.get("categories") or {}).items():
@@ -65,3 +62,14 @@ def load_config(path: str | Path) -> Config:
     category_colors = assign_colors(all_categories, category_overrides)
 
     return Config(books=books, width=width, category_colors=category_colors)
+
+
+def load_config(path: str | Path) -> Config:
+    with open(path, encoding="utf-8") as f:
+        data = yaml.safe_load(f) or {}
+    return _parse_config(data)
+
+
+def load_config_from_string(text: str, width_override: Optional[int] = None) -> Config:
+    data = yaml.safe_load(text) or {}
+    return _parse_config(data, width_override=width_override)
