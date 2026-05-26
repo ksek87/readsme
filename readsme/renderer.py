@@ -133,11 +133,19 @@ def _svg_defs() -> str:
         0%, 100% { opacity: 0; }
         50%      { opacity: 0.55; }
       }
-      .book {
-        animation: bookRise 0.45s ease-out both;
-      }
-      .reading-glow {
-        animation: readingPulse 2.8s ease-in-out infinite;
+      .book { animation: bookRise 0.45s ease-out both; }
+      .reading-glow { animation: readingPulse 2.8s ease-in-out infinite; }
+
+      /* light mode (default) */
+      .bg          { fill: #F4E8C1; }
+      .section-label { fill: #5C3D2D; }
+      .section-line  { stroke: #C4A265; }
+
+      /* dark mode */
+      @media (prefers-color-scheme: dark) {
+        .bg            { fill: #1C1810; }
+        .section-label { fill: #C8A07A; }
+        .section-line  { stroke: #6A4A28; }
       }
     </style>
   </defs>"""
@@ -214,16 +222,16 @@ def _svg_section_label(status: str, y: float, width: int) -> str:
     lines = ""
     if cx - lx > gap + 10:
         lines = (
-            f'\n  <line x1="{lx:.1f}" y1="{line_y:.1f}" x2="{cx - gap:.1f}" y2="{line_y:.1f}"'
-            f' stroke="#C4A265" stroke-width="0.8" opacity="0.5"/>'
-            f'\n  <line x1="{cx + gap:.1f}" y1="{line_y:.1f}" x2="{rx:.1f}" y2="{line_y:.1f}"'
-            f' stroke="#C4A265" stroke-width="0.8" opacity="0.5"/>'
+            f'\n  <line class="section-line" x1="{lx:.1f}" y1="{line_y:.1f}"'
+            f' x2="{cx - gap:.1f}" y2="{line_y:.1f}" stroke-width="0.8" opacity="0.5"/>'
+            f'\n  <line class="section-line" x1="{cx + gap:.1f}" y1="{line_y:.1f}"'
+            f' x2="{rx:.1f}" y2="{line_y:.1f}" stroke-width="0.8" opacity="0.5"/>'
         )
 
     return (
-        f'  <text x="{cx:.1f}" y="{text_y:.1f}" text-anchor="middle"\n'
+        f'  <text class="section-label" x="{cx:.1f}" y="{text_y:.1f}" text-anchor="middle"\n'
         f'    font-family="Georgia,\'Times New Roman\',serif"\n'
-        f'    font-size="12" fill="#5C3D2D" letter-spacing="1.5"\n'
+        f'    font-size="12" letter-spacing="1.5"\n'
         f'    font-style="italic"\n'
         f"  >{label}</text>"
         + lines
@@ -247,10 +255,9 @@ def render(config: Config) -> str:
         f' width="{svg_w}" height="{total_h}"'
         f' role="img" aria-label="My bookshelf">',
         _svg_defs(),
-        # parchment background
-        f'  <rect width="{svg_w}" height="{total_h}"'
-        f' fill="{BG_COLOR}" rx="8" ry="8"/>',
-        # warm vignette over background
+        # background (colour overridden in dark mode via .bg CSS class)
+        f'  <rect class="bg" width="{svg_w}" height="{total_h}" rx="8" ry="8"/>',
+        # warm vignette overlay
         f'  <rect width="{svg_w}" height="{total_h}"'
         f' fill="url(#bgVignette)" rx="8" ry="8"/>',
     ]

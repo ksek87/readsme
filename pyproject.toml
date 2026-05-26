@@ -17,9 +17,17 @@ dependencies = [
 covers = [
     "httpx>=0.24",
 ]
-dev = [
+server = [
+    "fastapi>=0.100",
     "httpx>=0.24",
+    "mangum>=0.17",
+]
+dev = [
+    "fastapi>=0.100",
+    "httpx>=0.24",
+    "mangum>=0.17",
     "pytest>=8.0",
+    "pytest-asyncio>=0.23",
     "pytest-cov",
 ]
 
